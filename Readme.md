@@ -1,7 +1,7 @@
-# Introduction
+# 1.0 Introduction
 
 This walkthrough on regression and modeling follows the SAS version that inspired it, written by the brilliant people from UCLA Idrea. It can be found here: [REGRESSION WITH SAS CHAPTER 1 – SIMPLE AND MULTIPLE REGRESSION](https://stats.idre.ucla.edu/sas/webbooks/reg/chapter1/regressionwith-saschapter-1-simple-and-multiple-regression/)
-This article will try to follow each step taken in SAS, try to replicate it in HPCC ECL, and present results and hopefully explain differences and where to go from there.
+This article will try to follow each step taken in the original web book, try to replicate it in HPCC ECL, and present results and hopefully explain differences and where to go from there.
 
 The emphasize will be on understanding data by running some simple analysis to find more actionable and useful means to come up with predictive models.
 
@@ -12,12 +12,12 @@ There are two versions of the data as we will see shortly, one which is *raw* (i
 
 The SAS *raw* file is [elemapi.sas7bdat](https://stats.idre.ucla.edu/wp-content/uploads/2016/02/elemapi-1.sas7bdat). This is the file we will be using from now on until mentioned otherwise.
 
-## Setting things up
+## 1.0.1 Setting things up
 
 Best is to simply clone this repository and add the containing folder to your **ECL Folders** in your ECL IDE.
 
 
-## Loading data
+## 1.0.2 Loading data
 
 Best is to simply to use ECL Watch to upload the data file to the dropzone and spray it as CSV.
 To make things faster, this ECL code will basically do the same.
@@ -26,7 +26,7 @@ To make things faster, this ECL code will basically do the same.
 TODO
 ```
 
-# Examining data
+# 1.1 Examining data
 
 Before getting to the nitty gritty, it's best to understand what kind of data we are dealing with.
 As far as I know, there's today no HPCC data file format that would store both the data and its description.
