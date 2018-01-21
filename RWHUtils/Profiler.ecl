@@ -1,4 +1,4 @@
-
+﻿
 EXPORT Profiler := MODULE
 
 	EXPORT profile_field_values( pDS, pFieldName, pField ) := FUNCTIONMACRO
@@ -56,6 +56,35 @@ EXPORT Profiler := MODULE
 			#END
 				SORTED(field)
 		);
+	ENDMACRO;
+	
+	EXPORT freq( pOutDS, pInDS, pFields = '' ) := MACRO
+		LOADXML('<xml/>');
+		//pOutDS := TABLE( pInDS; { #EXPAND(pFields); UNSIGNED frequency := COUNT(GROUP); DECIMAL4_2 percent := 0.0; UNSIGNED cumul_frequency := 0; DECIMAL4_2 cumul_percent := 0.0 }, #EXPAND(pFields) ) 
+		#DECLARE(tablefieldslist) #SET(tablefieldslist,'')
+		#DECLARE(tablefieldsgroup) #SET(tablefieldsgroup,'')
+		#EXPORTXML(fields,RECORDOF(pInDS))
+		#FOR(fields)
+			#FOR(Field)
+				#IF(REGEXFIND('\\s*,\\s*'+%'{@label}'%+',',','+pFields+',',NOCASE))
+					#APPEND(tablefieldslist, %'{@label}'%)
+					#APPEND(tablefieldslist, ';')
+					#IF(%'tablefieldsgroup'%!='')
+						#APPEND(tablefieldsgroup, ',')
+					#END
+					#APPEND(tablefieldsgroup, %'{@label}'%)
+				#END
+			#END
+		#END
+		//OUTPUT( %'tablefieldslist'% );
+		//OUTPUT( %'tablefieldsgroup'% );
+		#UNIQUENAME(Summary)
+		%Summary% := TABLE( pInDS, { #EXPAND(%'tablefieldslist'%) UNSIGNED frequency := COUNT(GROUP); DECIMAL4_2 percent := COUNT(GROUP) / COUNT(pInDS); UNSIGNED cumul_frequency := 0; DECIMAL4_2 cumul_percent := 0.0; }, #EXPAND(%'tablefieldsgroup'%) );
+		pOutDS := ITERATE( %Summary%, TRANSFORM( RECORDOF( %Summary% ),
+			SELF.cumul_frequency := LEFT.cumul_frequency + RIGHT.frequency;
+			SELF.cumul_percent := LEFT.cumul_percent + RIGHT.percent;
+			SELF := RIGHT;
+		));
 	ENDMACRO;
 
 END;
