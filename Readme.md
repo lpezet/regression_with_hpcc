@@ -60,7 +60,7 @@ raw_layout := RECORD
 END;
 ```
 
-So basically, the data file contains academic performance, average class sizes, percent of student eligible for free meals, parents education, percent of teachers with full and emergency credentials, number of enrollees, etc. per school.
+The data file contains academic performance, average class sizes, percent of student eligible for free meals, parents education, percent of teachers with full and emergency credentials, number of enrollees, etc. per school.
 
 Let's see what the data looks like:
 
@@ -69,4 +69,47 @@ OUTPUT( DATASET('regression::elemapi-1', raw_layout, THOR), NAMED('DataSample'))
 ```
 
 This will print the first 100 records from the data.
+
+| snum | dnum | api00 | api99 | growth | meals | ell | yr_rnd | mobility | acs_k3 | acs_46 | not_hsg | hsg | some_col | col_grad | grad_sch | avg_ed | full | emer | enroll | mealcat | collcat |
+| ---- | ----- | ----- | ---- | ---- | --- | --- | ---- | ---- | ---- | --- | --- | --- | --- | --- | --- | ---- | ---- | ----- | --- | --- | --- |
+| 906 | 41 | 693 | 600 | 93 | 67 | 9 | 0 | 11 | 16 | 22 | 0 | 0 | 0 | 0 | 0 |  | 76 | 24 | 247 | 2 | |
+| 889 | 41 | 570 | 501 | 69 | 92 | 21 | 0 | 33 | 15 | 32 | 0 | 0 | 0 | 0 | 0 |  | 79 | 19 | 463 | 3 | | 
+| 887 | 41 | 546 | 472 | 74 | 97 | 29 | 0 | 36 | 17 | 25 | 0 | 0 | 0 | 0 | 0 |  | 68 | 29 | 395 | 3 | |
+| 876 | 41 | 571 | 487 | 84 | 90 | 27 | 0 | 27 | 20 | 30 | 36 | 45 | 9 | 9 | 0 | 1.909999966621399 | 87 | 11 | 418 | 3 | |
+| 888 | 41 | 478 | 425 | 53 | 89 | 30 | 0 | 44 | 18 | 31 | 50 | 50 | 0 | 0 | 0 | 1.5 | 87 | 13 | 520 | 3 | |
+| 4284 | 98 | 858 | 844 | 14 |  | 3 | 0 | 10 | 20 | 33 | 1 | 8 | 24 | 36 | 31 | 3.890000104904175 | 100 | 0 | 343 | 1 | |
+| 4271 | 98 | 918 | 864 | 54 |  | 2 | 0 | 16 | 19 | 28 | 1 | 4 | 18 | 34 | 43 | 4.130000114440918 | 100 | 0 | 303 | 1 | |
+| 2910 | 108 | 831 | 791 | 40 |  | 3 | 0 | 44 | 20 | 31 | 0 | 4 | 16 | 50 | 30 | 4.059999942779541 | 96 | 2 | 1513 | 1 | |
+| 2899 | 108 | 860 | 838 | 22 |  | 6 | 0 | 10 | 20 | 30 | 2 | 9 | 15 | 42 | 33 | 3.9600000381469727 | 100 | 0 | 660 | 1 | |
+| 2887 | 108 | 737 | 703 | 34 | 29 | 15 | 0 | 17 | 21 | 29 | 8 | 25 | 34 | 27 | 7 | 2.9800000190734863 | 96 | 7 | 362 | 1 | |
+| ... | ..... | ..... | .... | .... | ... | ... | .... | .... | .... | ... | ... | ... | ... | ... | ... | .... | .... | ..... | ... | ... | ... | 
+
+Listing data can be helpful to eyeball problems within it. In this output, we can clearly see that some values are missing for *meals*., as well as fr *avg_ed*. Thing is, it's possible we might be missing values for other fields that we can't see here because we're looking at only 100 records.
+
+ A useful way to learn about the data at hand is to get basic statistics on the fields we're interested in, like the minimum value, the maximum value, the average, etc.
+ 
+ This can be easily done using the free Machine Learning library provided by HPCC Systems.
+ 
+ 
+ The output is as follows:
+ 
+| field_name | number | minval | maxval | sumval | countval | mean | var | sd |
+| ----- | -- | ---- | ---- | ------- | ----- | ----------------- | --------------- | ---------------- |
+| acs_k3 | 10 | 0.0 | 50.0 | 11399.0 | 386.0 | 29.53108808290155 | 21.518463582915 | 4.63879979983131 |
+| full | 18 | 0.0 | 59.0 | 4984.0 | 386.0 | 12.9119170984456 | 142.1269564283605 | 11.92170107108715 |
+| api00 | 3 | 333.0 | 917.0 | 236741.0 | 386.0 | 613.3186528497409 | 21605.42954844422 | 146.9878551052576 |
+| meals | 6 | 0.0 | 91.0 | 12307.0 | 386.0 | 31.88341968911917 | 632.1962535907005 | 25.14351315132196 |
+
+WARNING: Again here, because of SAS Viewer export, some observations made from UCLA is off here, since we don't see like -21 for min val of acs_k3.
+
+
+TODO: freq for yr_rnd
+TODO: univariate acs_k3
+TODO: tables acs_k3
+TODO: troubleshoot negatie values for acs_k3
+TODO: troubleshoot full <= 1
+TODO: scatter plots!!!
+TODO; regression!!!!
+
+
 
