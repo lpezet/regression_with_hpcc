@@ -1,17 +1,17 @@
 ﻿
 EXPORT Profiler := MODULE
 
-	EXPORT profile_field_values( pDS, pFieldName, pField ) := FUNCTIONMACRO
-		RETURN
-			TABLE( pDS, { STRING field := pFieldName; STRING value := pField; UNSIGNED occ := COUNT(GROUP); }, pField );
+	EXPORT profile_field_values( pOutDS, pInDS, pFieldName, pField ) := MACRO
+		pOutDS :=
+			TABLE( pInDS, { STRING field := pFieldName; STRING value := pField; UNSIGNED occ := COUNT(GROUP); }, pField );
 	ENDMACRO;
 	
-	EXPORT profile_select_fields_values( pDS, pFields ) := FUNCTIONMACRO
+	EXPORT profile_select_fields_values( pOutDS, pInDS, pFields ) := MACRO
 		LOADXML( pFields );
-		RETURN MERGE(
-			//#EXPORTXML(FileStruct, pDS)
+		pOutDS := MERGE(
+			//#EXPORTXML(FileStruct, pInDS)
 			#FOR (Field)
-				TABLE( pDS, { STRING field := %'{@label}'%; STRING value := %{@label}%; UNSIGNED occ := COUNT(GROUP); }, %{@label}% , UNSORTED, MERGE),
+				TABLE( pInDS, { STRING field := %'{@label}'%; STRING value := %{@label}%; UNSIGNED occ := COUNT(GROUP); }, %{@label}% , UNSORTED, MERGE),
 				//TABLE( pDS, { STRING100 field := %'{@label}'%; STRING100 min_value := MIN(GROUP, %{@label}%); STRING100 max_value := MAX(GROUP, %{@label}%); UNSIGNED min_value_length := MIN(GROUP, LENGTH(%{@label}%)); UNSIGNED max_value_length := MAX(GROUP, LENGTH(%{@label}%)); UNSIGNED filled_in := SUM(GROUP, IF(%{@label}% = '',0,1)); UNSIGNED total_records := COUNT(GROUP); } ),
 			#END
 				SORTED(field)
@@ -19,13 +19,13 @@ EXPORT Profiler := MODULE
 	ENDMACRO;
 
 	
-	EXPORT profile_fields_values( pDS ) := FUNCTIONMACRO
-		RETURN MERGE(
-			#EXPORTXML(FileStruct, pDS)
+	EXPORT profile_fields_values( pOutDS, pInDS ) := MACRO
+		pOutDS := MERGE(
+			#EXPORTXML(FileStruct, pInDS)
 			#FOR (FileStruct)
 				#FOR (ThorTable)
 					#FOR (Field)
-						TABLE( pDS, { STRING field := %'{@label}'%; STRING value := %{@label}%; UNSIGNED occ := COUNT(GROUP); }, %{@label}%, UNSORTED, MERGE),
+						TABLE( pInDS, { STRING field := %'{@label}'%; STRING value := %{@label}%; UNSIGNED occ := COUNT(GROUP); }, %{@label}%, UNSORTED, MERGE),
 					#END
 				#END
 			#END
@@ -33,13 +33,13 @@ EXPORT Profiler := MODULE
 		);
 	ENDMACRO;
 
-	EXPORT profile_fields( pDS ) := FUNCTIONMACRO
-		RETURN MERGE(
-			#EXPORTXML(FileStruct, pDS)
+	EXPORT profile_fields( pOutDS, pInDS ) := MACRO
+		pOutDS := MERGE(
+			#EXPORTXML(FileStruct, pInDS)
 			#FOR (FileStruct)
 				#FOR (ThorTable)
 					#FOR (Field)
-						TABLE( pDS, { STRING100 field := %'{@label}'%; STRING100 min_value := MIN(GROUP, %{@label}%); STRING100 max_value := MAX(GROUP, %{@label}%); UNSIGNED min_value_length := MIN(GROUP, LENGTH(%{@label}%)); UNSIGNED max_value_length := MAX(GROUP, LENGTH(%{@label}%)); } ),
+						TABLE( pInDS, { STRING100 field := %'{@label}'%; STRING100 min_value := MIN(GROUP, %{@label}%); STRING100 max_value := MAX(GROUP, %{@label}%); UNSIGNED min_value_length := MIN(GROUP, LENGTH(%{@label}%)); UNSIGNED max_value_length := MAX(GROUP, LENGTH(%{@label}%)); } ),
 					#END
 				#END
 			#END
@@ -47,12 +47,12 @@ EXPORT Profiler := MODULE
 		);
 	ENDMACRO;
 	
-	EXPORT profile_select_fields( pDS, pFields ) := FUNCTIONMACRO
+	EXPORT profile_select_fields( pOutDS, pInDS, pFields ) := MACRO
 		LOADXML( pFields );
-		RETURN MERGE(
-			//#EXPORTXML(FileStruct, pDS)
+		pOutDS := MERGE(
+			//#EXPORTXML(FileStruct, pInDS)
 			#FOR (Field)
-					TABLE( pDS, { STRING100 field := %'{@label}'%; STRING100 min_value := MIN(GROUP, %{@label}%); STRING100 max_value := MAX(GROUP, %{@label}%); UNSIGNED min_value_length := MIN(GROUP, LENGTH(%{@label}%)); UNSIGNED max_value_length := MAX(GROUP, LENGTH(%{@label}%)); UNSIGNED filled_in := SUM(GROUP, IF(%{@label}% = '',0,1)); UNSIGNED total_records := COUNT(GROUP); } ),
+					TABLE( pInDS, { STRING100 field := %'{@label}'%; STRING100 min_value := MIN(GROUP, %{@label}%); STRING100 max_value := MAX(GROUP, %{@label}%); UNSIGNED min_value_length := MIN(GROUP, LENGTH(%{@label}%)); UNSIGNED max_value_length := MAX(GROUP, LENGTH(%{@label}%)); UNSIGNED filled_in := SUM(GROUP, IF(%{@label}% = '',0,1)); UNSIGNED total_records := COUNT(GROUP); } ),
 			#END
 				SORTED(field)
 		);
