@@ -26,7 +26,7 @@ Open the file `Chap1_0_GettingStarted.ecl` and submit it.
 
 This code simply extracts the data by downloading the data files contained in this project and extracting their content.
 The CSV files we're interested in here are then available in the dropzone.
-Data is then loaded as "raw" data, where all fields are basically of the *STRING* type. It's best to start this way to examine the data and make sure nothing is **lost in translation** when using final field types.
+Data is then loaded as "raw" data, where all variables are basically of the *STRING* type. It's best to start this way to examine the data and make sure nothing is **lost in translation** when using final field types.
 
 
 # 1.1 Examining data
@@ -93,14 +93,14 @@ Here are the first 10 records from this output:
 | ... | ..... | ..... | .... | .... | ... | ... | .... | .... | .... | ... | ... | ... | ... | ... | ... | .... | .... | ..... | ... | ... | ... | 
 
 Listing data can be helpful to eyeball problems within it. In this sample, we can clearly see that some values are missing for *meals*., as well as fr *avg_ed*.
-Thing is, it's possible we might be missing values for other fields that we can't see here because we're looking at only 100 records.
+Thing is, it's possible we might be missing values for other variables that we can't see here because we're looking at only 100 records.
 
-A useful way to learn about the data at hand is to get basic statistics on the fields we're interested in, like minimum value, maximum value, average, etc.
+A useful way to learn about the data at hand is to get basic statistics on the variables we're interested in, like minimum value, maximum value, average, etc.
 I provided a module called `Profiler` that will help with this task and shows in the next outputs.
  
-## 1.1.2 All Fields
+## 1.1.2 All Variables
  
-The `AllFields` output shows information for all fields.
+The `AllFields` output shows information for all variables.
 This is generated from the action below:
 
 ```
@@ -120,14 +120,14 @@ Which outputs the following:
 | ... | ... | ... | ... | ... | ... | 
 
 
-It is now very easy to see now if (where) we are missing values for any of those fields.
-Any field with less than 400 observations is a field with at least one missing value (empty).
+It is now very easy to see now if (where) we are missing values for any of those variables.
+Any variable with less than 400 observations is a variable with at least one missing value (empty).
 
 
 
-## 1.1.3 Select Fields Values
+## 1.1.3 Select Variables Values
 
-The next output is `SelectFieldsValues` which shows some information on the values of each select fields.
+The next output is `SelectVariablesValues` which shows some information on the values of each select variables.
 
 The ECL code to generate such output is as follows:
 
@@ -154,9 +154,8 @@ For instance, we knew already that `acs_k3` had values missing (since its ``obs 
 
 ## 1.1.4 Meals Frequency
 
-MealsFrequency
+The next output is ``MealsFrequency``. This is 
 
-This can be easily done using the free Machine Learning library provided by HPCC Systems.
  
  
 The output is as follows:
@@ -169,6 +168,68 @@ The output is as follows:
 | meals | 6 | 0.0 | 91.0 | 12307.0 | 386.0 | 31.88341968911917 | 632.1962535907005 | 25.14351315132196 |
 
 WARNING: Again here, because of SAS Viewer export, some observations made from UCLA is off here, since we don't see like -21 for min val of acs_k3.
+
+
+
+It is recommended to get this kind of information on all variables you're interested in using in your analysis.
+The accuracy of your results greatly depends on the quality of your variables.
+
+## 1.1.? Full
+
+We haven't seen anything wrong with the variable ``full`` so far. But looking at....
+
+``FullFrequency`` output:
+
+| full | frequency | percent | cumul_frequency  | cumul_percent |
+| --- | --- | --- | ---  | --- |
+| 0.41999998688697815 | 1 | 0.25 | 1 | 0.25 |
+| 0.44999998807907104 | 1 | 0.25 | 2 | 0.5 |
+| 0.46000000834465027 | 1 | 0.25 | 3 | 0.75 |
+| 0.4699999988079071 | 1 | 0.25 | 4 | 1 |
+| 0.47999998927116394 | 1 | 0.25 | 5 | 1.25 |
+| 0.5 | 3 | 0.75 | 8 | 2 |
+| 0.5099999904632568 | 1 | 0.25 | 9 | 2.25 |
+| 0.5199999809265137 | 1 | 0.25 | 10 | 2.5 |
+| 0.5299999713897705 | 1 | 0.25 | 11 | 2.75 |
+| 0.5400000214576721 | 1 | 0.25 | 12 | 3 |
+| 0.5600000023841858 | 2 | 0.5 | 14 | 3.5 |
+| 0.5699999928474426 | 2 | 0.5 | 16 | 4 |
+| 0.5799999833106995 | 1 | 0.25 | 17 | 4.25 |
+| 0.5899999737739563 | 3 | 0.75 | 20 | 5 |
+| 0.6000000238418579 | 1 | 0.25 | 21 | 5.25 |
+| 0.6100000143051147 | 4 | 1 | 25 | 6.25 |
+| 0.6200000047683716 | 2 | 0.5 | 27 | 6.75 |
+| 0.6299999952316284 | 1 | 0.25 | 28 | 7 |
+| 0.6399999856948853 | 3 | 0.75 | 31 | 7.75 |
+| 0.6499999761581421 | 3 | 0.75 | 34 | 8.5 |
+| 0.6600000262260437 | 2 | 0.5 | 36 | 9 |
+| 0.6700000166893005 | 6 | 1.5 | 42 | 10.5 |
+| 0.6800000071525574 | 2 | 0.5 | 44 | 11 |
+| 0.6899999976158142 | 3 | 0.75 | 47 | 11.75 |
+| 0.699999988079071 | 1 | 0.25 | 48 | 12 |
+| 0.7099999785423279 | 1 | 0.25 | 49 | 12.25 |
+| 0.7200000286102295 | 2 | 0.5 | 51 | 12.75 |
+| 0.7300000190734863 | 6 | 1.5 | 57 | 14.25 |
+| 0.75 | 4 | 1 | 61 | 15.25 |
+| 0.7599999904632568 | 2 | 0.5 | 63 | 15.75 |
+| 0.7699999809265137 | 2 | 0.5 | 65 | 16.25 |
+| 0.7900000214576721 | 3 | 0.75 | 68 | 17 |
+| 0.800000011920929 | 5 | 1.25 | 73 | 18.25 |
+| 0.8100000023841858 | 8 | 2 | 81 | 20.25 |
+| 0.8199999928474426 | 2 | 0.5 | 83 | 20.75 |
+| 0.8299999833106995 | 2 | 0.5 | 85 | 21.25 |
+| 0.8399999737739563 | 2 | 0.5 | 87 | 21.75 |
+| 0.8500000238418579 | 3 | 0.75 | 90 | 22.5 |
+| 0.8600000143051147 | 2 | 0.5 | 92 | 23 |
+| 0.8999999761581421 | 3 | 0.75 | 95 | 23.75 |
+| 0.9200000166893005 | 1 | 0.25 | 96 | 24 |
+| 0.9300000071525574 | 1 | 0.25 | 97 | 24.25 |
+| 0.9399999976158142 | 2 | 0.5 | 99 | 24.75 |
+| 0.949999988079071 | 2 | 0.5 | 101 | 25.25 |
+| 0.9599999785423279 | 1 | 0.25 | 102 | 25.5 |
+| 1 | 2 | 0.5 | 104 | 26 |
+| ... | ... | ... | ...  | ... |
+
 
 
 TODO: freq for yr_rnd
