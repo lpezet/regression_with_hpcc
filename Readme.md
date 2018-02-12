@@ -231,6 +231,39 @@ We haven't seen anything wrong with the variable ``full`` so far. But looking at
 | ... | ... | ... | ...  | ... |
 
 
+Let's see which district(s) these decimal values came from.
+
+```
+Profiler.freq( oFreqFullDNum, oDS( ((REAL8) full) <= 1 ), 'dnum' );
+OUTPUT(oFreqFullDNum, NAMED('FullDNumFrequency') );
+```
+
+| dnum | frequency | percent | cumul_frequency | cumul_percent |
+| --- | --- | --- | --- | --- |
+| 401 | 104 | 100 | 104 | 100 |
+
+All 104 observations in which ``full`` was less than or equal to one came from district *401*.
+Let's see now if this accounts for all of the observations that come from district 401.
+
+```
+Profiler.freq( oFreqDNum, oDS( dnum = '401' ), 'dnum' );
+OUTPUT(oFreqDNum, NAMED('DNumFrequency') );
+```
+
+| dnum | frequency | percent | cumul_frequency | cumul_percent |
+| --- | --- | --- | --- | --- |
+| 401 | 104 | 100 | 104 | 100 |
+
+All of the observations from this district seem to be recorded as proportions instead of percentages.
+As mentioned in the original article, this is a pretend problem that was inserted into the data for illustration purposes. If this were a real life problem, we would check with the source of the data and verify the problem.
+We will make a note to fix this problem in the data as well.
+
+Another useful graphical technique for screening your data is a scatterplot matrix.
+TODO....
+
+
+
+
 
 TODO: freq for yr_rnd
 TODO: univariate acs_k3
